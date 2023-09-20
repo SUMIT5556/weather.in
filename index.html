@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="cd">
+        <div class="ser">
+            <input type="text" placeholder="ENTER CITY NAME." spellcheck="false">
+            <button><img src="search.png"></button>
+        </div>
+        <div class="not">
+            <p>INVALID CITY NAME</p>
+        </div>
+        <div class="display">
+            <img src="clouds.png" class="icon">
+            <h1 class="temper">22°C</h1>
+            <h2 class="place">MUMBAI</h2>
+        </div>
+    </div>
+    <script>
+        const apikey = "df8db8955654edcf686106ea612384e6";
+        const apiurl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+
+        const search = document.querySelector(".ser input");
+        const button = document.querySelector(".ser button");
+        const icon = document.querySelector(".icon")
+
+        async function weather(place) {
+            const response = await fetch(apiurl + place + `&appid=${apikey}`);
+            
+            var data = await response.json();
+    
+            document.querySelector(".place").innerHTML = data.name; 
+            document.querySelector(".temper").innerHTML = Math.round(data.main.temp) + "°c"; 
+
+            if(data.weather[0].main == "Clouds"){
+                icon.src = "clouds.png"
+            }
+            else if(data.weather[0].main == "Clear"){
+                icon.src = "clear.png"
+            }
+            else if(data.weather[0].main == "Rain"){
+                icon.src = "rain.png"
+            }
+            else if(data.weather[0].main == "Drizzle"){
+                icon.src = "drizzle.png"
+            }
+            else if(data.weather[0].main == "Mist"){
+                icon.src = "mist.png"
+            }
+            else if(data.weather[0].main == "Snow"){
+                icon.src = "snow.png"
+            }
+
+            document.querySelector(".display").style.display = "block"
+            
+        }
+        button.addEventListener("click",()=>{
+            weather(search.value);
+        })
+        
+    </script>
+</body>
+
+</html>
